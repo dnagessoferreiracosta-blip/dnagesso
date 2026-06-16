@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNA GESSO - Atendimento Automatizado</title>
+    <style>
+        :root {
+            --primary: #cc0000;
+            --secondary: #e60000;
+            --dark: #1e293b;
+            --light: #f1f1f1;
+            --success: #10b981;
+            --email-btn: #4f46e5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-top: 6px solid var(--primary);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 28px;
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: 1px solid var(--primary);
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+        button.btn-email {
+            background-color: var(--email-btn);
+            border-color: var(--email-btn);
+            margin-top: 15px;
+        }
+
+        button.btn-email:hover {
+            background-color: #4338ca;
+            border-color: #4338ca;
+        }
+
+        button.btn-back {
+            background-color: #ffffff;
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+            margin-top: 15px;
+        }
+
+        button.btn-back:hover {
+            background-color: #f8fafc;
+            color: var(--dark);
+            border-color: #94a3b8;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 15px;
+            background-color: #ffffff;
+            font-family: inherit;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 70px;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .result-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+            display: none;
+        }
+
+        .result-box h3 {
+            margin-top: 0;
+            color: var(--success);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>DNA GESSO</h1>
+    <p class="subtitle">Orçamento de Prestação de Serviços</p>
+
+    <!-- TELA 1: MENU PRINCIPAL -->
+    <div id="screen-main" class="screen active">
+        <p style="font-size: 16px; margin-bottom: 20px; line-height: 1.5;">
+            Olá! Bem-vindo ao sistema de atendimento automatizado. <br>
+            Clique no botão abaixo para iniciar a simulação do seu orçamento de serviço.
+        </p>
+        <button onclick="changeScreen('screen-services')">Solicitar Orçamento de Serviço</button>
+    </div>
+
+    <!-- TELA 2: PRESTAÇÃO DE SERVIÇOS -->
+    <div id="screen-services" class="screen">
+        <h2>Dados do Serviço</h2>
+        
+        <div class="form-group">
+            <label for="client-name">Seu Nome:</label>
+            <input type="text" id="client-name" placeholder="Digite seu nome completo">
+        </div>
+
+        <div class="form-group">
+            <label for="client-phone">Seu WhatsApp (com DDD):</label>
+            <input type="tel" id="client-phone" placeholder="(00) 99999-9999" maxlength="15" oninput="aplicarMascaraTelefone(this)">
+        </div>
+
+        <div class="form-group">
+            <label for="client-address">Endereço da Obra:</label>
+            <textarea id="client-address" placeholder="Rua, número, bairro e cidade"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="service-select">Selecione o Serviço:</label>
+            <select id="service-select">
+                <option value="65.00" data-name="Instalação de Forro de Drywall">Instalação de Forro de Drywall - R$ 65,00/m²</option>
+                <option value="35.00" data-name="Aplicação de Gesso Liso (Parede)">Aplicação de Gesso Liso (Parede) - R$ 35,00/m²</option>
+                <option value="45.00" data-name="Instalação de Sanca">Instalação de Sanca - R$ 45,00/metro linear</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="service-size">Medida da Área/Extensão (em metros):</label>
+            <input type="number" id="service-size" min="0.1" step="0.1" value="10">
+        </div>
+
+        <button onclick="calculateServices()">Gerar Orçamento</button>
+        
+        <div id="result-services" class="result-box"></div>
+        
+        <button class="btn-back" onclick="goBack('result-services')">Voltar ao Início</button>
+    </div>
+</div>
+
+<script {nonce}>
+    const SEU_EMAIL = "joaoyvis88@gmail.com";
+
+    function aplicarMascaraTelefone(input) {
+        let valor = input.value.replace(/\D/g, ""); 
+        
+        if (valor.length > 0) {
+            valor = "(" + valor;
+        }
+        if (valor.length > 3) {
+            valor = valor.slice(0, 3) + ") " + valor.slice(3);
+        }
+        if (valor.length > 10) {
+            valor = valor.slice(0, 10) + "-" + valor.slice(10);
+        }
+        
+        input.value = valor.slice(0, 15); 
+    }
+
+    function changeScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+        document.getElementById(screenId).classList.add('active');
+    }
+
+    function goBack(resultBoxId) {
+        document.getElementById(resultBoxId).style.display = 'none';
+        
+        document.getElementById('client-name').value = '';
+        document.getElementById('client-phone').value = '';
+        document.getElementById('client-address').value = '';
+        document.getElementById('service-size').value = '10';
+        
+        changeScreen('screen-main');
+    }
+
+    function calculateServices() {
+        const name = document.getElementById('client-name').value.trim();
+        const phone = document.getElementById('client-phone').value.trim();
+        const address = document.getElementById('client-address').value.trim();
+        const select = document.getElementById('service-select');
+        const pricePerMeter = parseFloat(select.value);
+        const serviceName = select.options[select.selectedIndex].getAttribute('data-name');
+        const size = parseFloat(document.getElementById('service-size').value);
+
+        if (!name || !phone || !address || size <= 0 || isNaN(size)) {
+            alert('Por favor, preencha todos os campos corretamente.');
+            return;
+        }
+
+        const total = pricePerMeter * size;
+        const totalFormatado = "R$ " + total.toFixed(2).replace('.', ',');
+        const resultBox = document.getElementById('result-services');
+        
+        resultBox.innerHTML = `
+            <h3>✅ Orçamento Gerado!</h3>
+            <p><strong>Cliente:</strong> ${name}</p>
+            <p><strong>WhatsApp:</strong> ${phone}</p>
+            <p><strong>Endereço:</strong> ${address}</p>
+            <p><strong>Serviço:</strong> ${serviceName}</p>
+            <p><strong>Medida:</strong> ${size} metros</p>
+            <p><strong>Custo estimado:</strong> ${totalFormatado}</p>
+            
+            <button class="btn-email" onclick="enviarPorEmail('${name}', '${phone}', '${address}', '${serviceName}', '${size}', '${totalFormatado}')">
+                Enviar Orçamento para DNA GESSO
+            </button>
+        `;
+        resultBox.style.display = 'block';
+    }
+
+    function enviarPorEmail(name, phone, address, service, size, total) {
+        const assunto = encodeURIComponent(`Novo Orçamento - DNA GESSO (${name})`);
+        
+        let corpo = `NOVO ORÇAMENTO GERADO NO SISTEMA\n\n`;
+        corpo += `Cliente: ${name}\n`;
+        corpo += `WhatsApp: ${phone}\n`;
+        corpo += `Endereço da Obra: ${address}\n`;
+        corpo += `Serviço Selecionado: ${service}\n`;
+        corpo += `Medida Informada: ${size} metros\n`;
+        corpo += `Valor Estimado da Mão de Obra: ${total}\n\n`;
+        corpo += `Aguardando validação técnica local.`;
+        
+        const corpoFormatado = encodeURIComponent(corpo);
+        
+        window.location.href = `mailto:${SEU_EMAIL}?subject=${assunto}&body=${corpoFormatado}`;
+    }
+</script>
+
+</body>
+</html>
